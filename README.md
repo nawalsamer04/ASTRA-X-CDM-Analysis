@@ -4,7 +4,7 @@ The contents of this repository include code and results supporting the ASTRA X 
 
 ## Contents:
 
-- `cdm_analysis.ipynb`: Jupyter Notebook that was used to read Conjunction Data Message (CDM) data into Python, calculate conjunction metrics (i.e., relative distance / miss distance) and produce figures mentioned in the paper.
+- `Astra.ipynb`: Jupyter Notebook that was used to read Conjunction Data Message (CDM) data into Python, calculate conjunction metrics (i.e., relative distance / miss distance) and produce figures mentioned in the paper.
 
 ## How to see it:
 
