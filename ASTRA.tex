@@ -1,0 +1,1859 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{ASTRA}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{pandas}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pd}
+
+\PY{n}{csv\PYZus{}path} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Users}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{nawal}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Downloads}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{debrisSolver\PYZus{}cdm\PYZus{}dataset (1)}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{2024\PYZus{}S1\PYZus{}cdm\PYZus{}ccsds.csv}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{c+c1}{\PYZsh{} Load the dataset }
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{csv\PYZus{}path}\PY{p}{)}
+
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   conjunction\_id  ccsds\_cdm\_vers comment\_header               creation\_date  \textbackslash{}
+0         4708712             1.0        COMMENT  2023-12-30 23:45:37.201629
+1         4796676             1.0        COMMENT  2023-12-31 17:07:38.953699
+2         4714477             1.0        COMMENT  2023-12-30 21:25:33.977263
+3         4411173             1.0        COMMENT  2023-12-28 07:09:39.816940
+4         4654350             1.0        COMMENT  2023-12-30 12:52:44.482941
+
+  originator  classification  message\_for    message\_id  event\_id  \textbackslash{}
+0        SMS             NaN          NaN  sms9\_4708712   3059662
+1        SMS             NaN          NaN  sms9\_4796676   3108026
+2        SMS             NaN          NaN  sms9\_4714477   3062731
+3        SMS             NaN          NaN  sms9\_4411173   2896647
+4        SMS             NaN          NaN  sms9\_4654350   3030325
+
+  comment\_relative\_metadata\_data  {\ldots} object2\_ctdot\_t  object2\_ctdot\_n  \textbackslash{}
+0                        COMMENT  {\ldots}             0.0              0.0
+1                        COMMENT  {\ldots}             0.0              0.0
+2                        COMMENT  {\ldots}             0.0              0.0
+3                        COMMENT  {\ldots}             0.0              0.0
+4                        COMMENT  {\ldots}             0.0              0.0
+
+   object2\_ctdot\_rdot  object2\_ctdot\_tdot  object2\_cndot\_r  object2\_cndot\_t  \textbackslash{}
+0                 0.0                 0.0              0.0              0.0
+1                 0.0                 0.0              0.0              0.0
+2                 0.0                 0.0              0.0              0.0
+3                 0.0                 0.0              0.0              0.0
+4                 0.0                 0.0              0.0              0.0
+
+   object2\_cndot\_n  object2\_cndot\_rdot  object2\_cndot\_tdot object2\_cndot\_ndot
+0              0.0                 0.0                 0.0                0.0
+1              0.0                 0.0                 0.0                0.0
+2              0.0                 0.0                 0.0                0.0
+3              0.0                 0.0                 0.0                0.0
+4              0.0                 0.0                 0.0                0.0
+
+[5 rows x 160 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{columns}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Index(['conjunction\_id', 'ccsds\_cdm\_vers', 'comment\_header', 'creation\_date',
+       'originator', 'classification', 'message\_for', 'message\_id', 'event\_id',
+       'comment\_relative\_metadata\_data',
+       {\ldots}
+       'object2\_ctdot\_t', 'object2\_ctdot\_n', 'object2\_ctdot\_rdot',
+       'object2\_ctdot\_tdot', 'object2\_cndot\_r', 'object2\_cndot\_t',
+       'object2\_cndot\_n', 'object2\_cndot\_rdot', 'object2\_cndot\_tdot',
+       'object2\_cndot\_ndot'],
+      dtype='object', length=160)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 1) Columns we *hope* to use}
+\PY{n}{candidate\PYZus{}cols} \PY{o}{=} \PY{p}{[}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conjunction\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}  \PY{c+c1}{\PYZsh{} maybe exists, maybe not}
+\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 2) Keep only the ones that actually exist in the dataframe}
+\PY{n}{important\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{candidate\PYZus{}cols} \PY{k}{if} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns we will actually use:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{important\PYZus{}cols}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 3) Build smaller dataframe}
+\PY{n}{df\PYZus{}small} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{important\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Columns we will actually use: ['conjunction\_id', 'creation\_date',
+'miss\_distance', 'relative\_speed', 'tca']
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   conjunction\_id               creation\_date  miss\_distance  relative\_speed  \textbackslash{}
+0         4708712  2023-12-30 23:45:37.201629     360.998008     4152.541202
+1         4796676  2023-12-31 17:07:38.953699     230.331161     6774.705183
+2         4714477  2023-12-30 21:25:33.977263     203.939751     8049.963408
+3         4411173  2023-12-28 07:09:39.816940     391.652906     9631.056058
+4         4654350  2023-12-30 12:52:44.482941     394.310174     1069.289496
+
+                          tca
+0  2024-01-01 00:02:05.515000
+1  2024-01-01 00:02:42.456000
+2  2024-01-01 00:03:50.751000
+3  2024-01-01 00:06:15.343000
+4  2024-01-01 00:06:16.278000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns containing }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{miss}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns containing }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{tca}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}  \PY{o+ow}{in} \PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns containing }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{vel}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vel}\PY{l+s+s1}{\PYZsq{}}  \PY{o+ow}{in} \PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns containing }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{object1}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object1}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns containing }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{object2}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object2}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{c}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Columns containing 'miss': ['miss\_distance']
+Columns containing 'tca': ['tca']
+Columns containing 'vel': ['relative\_velocity\_r', 'relative\_velocity\_t',
+'relative\_velocity\_n']
+Columns containing 'object1': ['comment\_object1\_metadata',
+'object1\_object\_designator', 'object1\_catalog\_name', 'object1\_object\_name',
+'object1\_international\_designator', 'object1\_object\_type',
+'object1\_operator\_organization', 'object1\_ephemeris\_name',
+'object1\_covariance\_method', 'object1\_maneuverable', 'object1\_orbit\_center',
+'object1\_ref\_frame', 'object1\_cov\_type', 'object1\_cov\_ref\_frame',
+'object1\_gravity\_model', 'object1\_atmospheric\_model',
+'object1\_n\_body\_perturbations', 'object1\_solar\_rad\_pressure',
+'object1\_earth\_tides', 'comment\_object1\_od\_parameters',
+'object1\_time\_lastob\_start', 'object1\_time\_lastob\_end',
+'object1\_recommended\_od\_span', 'object1\_actual\_od\_span',
+'object1\_obs\_available', 'object1\_obs\_used', 'object1\_tracks\_available',
+'object1\_tracks\_used', 'object1\_residuals\_accepted', 'object1\_weighted\_rms',
+'comment\_object1\_data\_additional\_parameters', 'object1\_area\_pc',
+'object1\_area\_pc\_max', 'object1\_mass', 'object1\_hbr',
+'comment\_object1\_state\_vector', 'object1\_x', 'object1\_y', 'object1\_z',
+'object1\_x\_dot', 'object1\_y\_dot', 'object1\_z\_dot', 'comment\_object1\_covmatrix',
+'object1\_cr\_r', 'object1\_ct\_r', 'object1\_ct\_t', 'object1\_cn\_r', 'object1\_cn\_t',
+'object1\_cn\_n', 'object1\_crdot\_r', 'object1\_crdot\_t', 'object1\_crdot\_n',
+'object1\_crdot\_rdot', 'object1\_ctdot\_r', 'object1\_ctdot\_t', 'object1\_ctdot\_n',
+'object1\_ctdot\_rdot', 'object1\_ctdot\_tdot', 'object1\_cndot\_r',
+'object1\_cndot\_t', 'object1\_cndot\_n', 'object1\_cndot\_rdot',
+'object1\_cndot\_tdot', 'object1\_cndot\_ndot']
+Columns containing 'object2': ['comment\_object2\_metadata',
+'object2\_object\_designator', 'object2\_catalog\_name', 'object2\_object\_name',
+'object2\_international\_designator', 'object2\_object\_type',
+'object2\_operator\_organization', 'object2\_ephemeris\_name',
+'object2\_covariance\_method', 'object2\_maneuverable', 'object2\_orbit\_center',
+'object2\_ref\_frame', 'object2\_cov\_type', 'object2\_cov\_ref\_frame',
+'object2\_gravity\_model', 'object2\_atmospheric\_model',
+'object2\_n\_body\_perturbations', 'object2\_solar\_rad\_pressure',
+'object2\_earth\_tides', 'comment\_object2\_od\_parameters',
+'object2\_time\_lastob\_start', 'object2\_time\_lastob\_end',
+'object2\_recommended\_od\_span', 'object2\_actual\_od\_span',
+'object2\_obs\_available', 'object2\_obs\_used', 'object2\_tracks\_available',
+'object2\_tracks\_used', 'object2\_residuals\_accepted', 'object2\_weighted\_rms',
+'comment\_object2\_data\_additional\_parameters', 'object2\_area\_pc',
+'object2\_area\_pc\_max', 'object2\_mass', 'object2\_hbr',
+'comment\_object2\_state\_vector', 'object2\_x', 'object2\_y', 'object2\_z',
+'object2\_x\_dot', 'object2\_y\_dot', 'object2\_z\_dot', 'comment\_object2\_covmatrix',
+'object2\_cr\_r', 'object2\_ct\_r', 'object2\_ct\_t', 'object2\_cn\_r', 'object2\_cn\_t',
+'object2\_cn\_n', 'object2\_crdot\_r', 'object2\_crdot\_t', 'object2\_crdot\_n',
+'object2\_crdot\_rdot', 'object2\_ctdot\_r', 'object2\_ctdot\_t', 'object2\_ctdot\_n',
+'object2\_ctdot\_rdot', 'object2\_ctdot\_tdot', 'object2\_cndot\_r',
+'object2\_cndot\_t', 'object2\_cndot\_n', 'object2\_cndot\_rdot',
+'object2\_cndot\_tdot', 'object2\_cndot\_ndot']
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Make sure dates are real datetime objects}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute warning time in hours (TCA \PYZhy{} creation date)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{total\PYZus{}seconds}\PY{p}{(}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{3600}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+               creation\_date                     tca  warning\_time\_hours
+0 2023-12-30 23:45:37.201629 2024-01-01 00:02:05.515           24.274531
+1 2023-12-31 17:07:38.953699 2024-01-01 00:02:42.456            6.917640
+2 2023-12-30 21:25:33.977263 2024-01-01 00:03:50.751           26.637993
+3 2023-12-28 07:09:39.816940 2024-01-01 00:06:15.343           88.943202
+4 2023-12-30 12:52:44.482941 2024-01-01 00:06:16.278           35.225499
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Summary stats for miss distance, relative speed, and warning time}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       miss\_distance  relative\_speed  warning\_time\_hours
+count  185511.000000   185511.000000       185358.000000
+mean      315.595593     7414.595895           45.746582
+std       121.299285     4512.002830           32.823966
+min         1.582203        0.002862          -42.827271
+25\%       224.220467     4644.384904           21.948911
+50\%       329.618681     6961.857788           50.888747
+75\%       419.414860    10473.114520           72.955969
+max       499.999072    16859.543888          110.742979
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Miss distance histogram}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Miss distance distribution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Relative speed histogram}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Relative speed distribution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Warning time histogram}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Warning time (hours)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<Axes: title=\{'center': 'Warning time (hours)'\}, ylabel='Frequency'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{classify\PYZus{}risk}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{n}{d} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{v} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    
+    \PY{c+c1}{\PYZsh{} Example thresholds in meters \PYZam{} km/s (you can tune later)}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{3000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Low}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{elif} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Medium}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{elif} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{300}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{High}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Critical}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{classify\PYZus{}risk}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+risk\_level
+High        106614
+Critical     78897
+Name: count, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{critical\PYZus{}events} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Critical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{high\PYZus{}events} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{High}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n}{len\PYZus{}critical} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{critical\PYZus{}events}\PY{p}{)}
+\PY{n}{len\PYZus{}high} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{high\PYZus{}events}\PY{p}{)}
+
+\PY{n}{len\PYZus{}critical}\PY{p}{,} \PY{n}{len\PYZus{}high}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(78897, 106614)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{critical\PYZus{}events}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}
+    \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} 
+    \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} 
+    \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Miss Distance Distribution (Critical Events)}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<Axes: title=\{'center': 'Miss Distance Distribution (Critical Events)'\},
+ylabel='Frequency'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{high\PYZus{}events}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}
+    \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} 
+    \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} 
+    \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Miss Distance Distribution (High\PYZhy{}Risk Events)}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<Axes: title=\{'center': 'Miss Distance Distribution (High-Risk Events)'\},
+ylabel='Frequency'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{critical\PYZus{}events}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}
+    \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} 
+    \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} 
+    \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Warning Time (Hours) – Critical Events}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<Axes: title=\{'center': 'Warning Time (Hours) – Critical Events'\},
+ylabel='Frequency'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{critical\PYZus{}events}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}
+    \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,}
+    \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+    \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Relative Speed Distribution – Critical Events}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<Axes: title=\{'center': 'Relative Speed Distribution – Critical Events'\},
+ylabel='Frequency'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Count high\PYZhy{}risk and critical events}
+
+\PY{n}{critical\PYZus{}events} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Critical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{high\PYZus{}events} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{High}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of CRITICAL events:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{critical\PYZus{}events}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of HIGH\PYZhy{}RISK events:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{high\PYZus{}events}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of CRITICAL events: 78897
+Number of HIGH-RISK events: 106614
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{80}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Miss Distance Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Miss Distance (meters)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Relative Speed vs Miss Distance}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Miss Distance (meters)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Relative Speed (m/s)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{obj\PYZus{}types} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object1\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{obj\PYZus{}types}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red-intense}{\textbf{---------------------------------------------------------------------------}}
+\textcolor{ansi-red-intense}{\textbf{KeyError}}                                  Traceback (most recent call last)
+File \textcolor{ansi-green-intense}{\textbf{\textasciitilde{}\textbackslash{}anaconda3\textbackslash{}Lib\textbackslash{}site-packages\textbackslash{}pandas\textbackslash{}core\textbackslash{}indexes\textbackslash{}base.py:3805}}, in \textcolor{ansi-cyan}{Index.get\_loc}\textcolor{ansi-blue-intense}{\textbf{(self, key)}}
+\textcolor{ansi-green}{   3804} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{try}}:
+\textcolor{ansi-green-intense}{\textbf{-> 3805}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_engine\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}get\_loc(casted\_key)
+\textcolor{ansi-green}{   3806} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{except}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{215,95,95}}{\textbf{KeyError}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{as}} err:
+
+File \textcolor{ansi-green-intense}{\textbf{index.pyx:167}}, in \textcolor{ansi-cyan}{pandas.\_libs.index.IndexEngine.get\_loc}\textcolor{ansi-blue-intense}{\textbf{()}}
+
+File \textcolor{ansi-green-intense}{\textbf{index.pyx:196}}, in \textcolor{ansi-cyan}{pandas.\_libs.index.IndexEngine.get\_loc}\textcolor{ansi-blue-intense}{\textbf{()}}
+
+File \textcolor{ansi-green-intense}{\textbf{pandas\textbackslash{}\textbackslash{}\_libs\textbackslash{}\textbackslash{}hashtable\_class\_helper.pxi:7081}}, in \textcolor{ansi-cyan}{pandas.\_libs.hashtable.PyObjectHashTable.get\_item}\textcolor{ansi-blue-intense}{\textbf{()}}
+
+File \textcolor{ansi-green-intense}{\textbf{pandas\textbackslash{}\textbackslash{}\_libs\textbackslash{}\textbackslash{}hashtable\_class\_helper.pxi:7089}}, in \textcolor{ansi-cyan}{pandas.\_libs.hashtable.PyObjectHashTable.get\_item}\textcolor{ansi-blue-intense}{\textbf{()}}
+
+\textcolor{ansi-red-intense}{\textbf{KeyError}}: 'object1\_type'
+
+The above exception was the direct cause of the following exception:
+
+\textcolor{ansi-red-intense}{\textbf{KeyError}}                                  Traceback (most recent call last)
+Cell \textcolor{ansi-green-intense}{\textbf{In[20], line 1}}
+\textcolor{ansi-green-intense}{\textbf{----> 1}} obj\_types \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} df\_small[\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{object1\_type}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}]\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}value\_counts()\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}head(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{10})
+\textcolor{ansi-green}{      2} obj\_types
+
+File \textcolor{ansi-green-intense}{\textbf{\textasciitilde{}\textbackslash{}anaconda3\textbackslash{}Lib\textbackslash{}site-packages\textbackslash{}pandas\textbackslash{}core\textbackslash{}frame.py:4102}}, in \textcolor{ansi-cyan}{DataFrame.\_\_getitem\_\_}\textcolor{ansi-blue-intense}{\textbf{(self, key)}}
+\textcolor{ansi-green}{   4100} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}columns\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}nlevels \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{>} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{1}:
+\textcolor{ansi-green}{   4101}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_getitem\_multilevel(key)
+\textcolor{ansi-green-intense}{\textbf{-> 4102}} indexer \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}columns\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}get\_loc(key)
+\textcolor{ansi-green}{   4103} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} is\_integer(indexer):
+\textcolor{ansi-green}{   4104}     indexer \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} [indexer]
+
+File \textcolor{ansi-green-intense}{\textbf{\textasciitilde{}\textbackslash{}anaconda3\textbackslash{}Lib\textbackslash{}site-packages\textbackslash{}pandas\textbackslash{}core\textbackslash{}indexes\textbackslash{}base.py:3812}}, in \textcolor{ansi-cyan}{Index.get\_loc}\textcolor{ansi-blue-intense}{\textbf{(self, key)}}
+\textcolor{ansi-green}{   3807}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{isinstance}(casted\_key, \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{slice}) \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{or}} (
+\textcolor{ansi-green}{   3808}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{isinstance}(casted\_key, abc\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}Iterable)
+\textcolor{ansi-green}{   3809}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{and}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{any}(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{isinstance}(x, \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{slice}) \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{for}} x \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{in}} casted\_key)
+\textcolor{ansi-green}{   3810}     ):
+\textcolor{ansi-green}{   3811}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{raise}} InvalidIndexError(key)
+\textcolor{ansi-green-intense}{\textbf{-> 3812}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{raise}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{215,95,95}}{\textbf{KeyError}}(key) \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{from}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{188,188,188}}{ }\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,0,255}}{\textbf{err}}
+\textcolor{ansi-green}{   3813} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{except}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{215,95,95}}{\textbf{TypeError}}:
+\textcolor{ansi-green}{   3814}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\# If we have a listlike key, \_check\_indexing\_error will raise}
+\textcolor{ansi-green}{   3815}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#  InvalidIndexError. Otherwise we fall through and re-raise}
+\textcolor{ansi-green}{   3816}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\#  the TypeError.}
+\textcolor{ansi-green}{   3817}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_check\_indexing\_error(key)
+
+\textcolor{ansi-red-intense}{\textbf{KeyError}}: 'object1\_type'
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{p}{[}\PY{n}{col} \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{type}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{in} \PY{n}{col}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red-intense}{\textbf{---------------------------------------------------------------------------}}
+\textcolor{ansi-red-intense}{\textbf{NameError}}                                 Traceback (most recent call last)
+Cell \textcolor{ansi-green-intense}{\textbf{In[1], line 1}}
+\textcolor{ansi-green-intense}{\textbf{----> 1}} df\_small[\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{tca}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}] \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} pd\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}to\_datetime(df\_small[\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{tca}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}], errors\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{coerce}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'})
+\textcolor{ansi-green}{      2} df\_small[\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{creation\_date}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}] \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} pd\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}to\_datetime(df\_small[\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{creation\_date}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}], errors\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{coerce}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'})
+
+\textcolor{ansi-red-intense}{\textbf{NameError}}: name 'pd' is not defined
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{pandas}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pd}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{csv\PYZus{}path} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Users}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{nawal}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Downloads}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{debrisSolver\PYZus{}cdm\PYZus{}dataset (1)}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{2024\PYZus{}S1\PYZus{}cdm\PYZus{}ccsds.csv}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{csv\PYZus{}path}\PY{p}{)}
+
+\PY{n}{candidate\PYZus{}cols} \PY{o}{=} \PY{p}{[}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conjunction\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{]}
+
+\PY{n}{important\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{candidate\PYZus{}cols} \PY{k}{if} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+\PY{n}{df\PYZus{}small} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{important\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Group by day of TCA}
+\PY{n}{daily\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{date}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{daily\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily Conjunction Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} === ASTRA X CDM – SETUP BLOCK (run this once each session) ===}
+
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{pandas}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pd}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{} 1) Load the full CDM CSV}
+\PY{n}{csv\PYZus{}path} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Users}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{nawal}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Downloads}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{debrisSolver\PYZus{}cdm\PYZus{}dataset (1)}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{2024\PYZus{}S1\PYZus{}cdm\PYZus{}ccsds.csv}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{csv\PYZus{}path}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2) Keep only the key columns we use in the analysis}
+\PY{n}{candidate\PYZus{}cols} \PY{o}{=} \PY{p}{[}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conjunction\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{]}
+
+\PY{n}{important\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{candidate\PYZus{}cols} \PY{k}{if} \PY{n}{c} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{]}
+\PY{n}{df\PYZus{}small} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{important\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 3) Convert dates to real datetime}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 4) Compute warning time (hours between alert and TCA)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{creation\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{total\PYZus{}seconds}\PY{p}{(}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{3600}
+
+\PY{c+c1}{\PYZsh{} 5) Classify risk level based on miss distance (simple, tunable logic)}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{classify\PYZus{}risk}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{n}{d} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{v} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+    \PY{k}{if} \PY{n}{pd}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{n}{d}\PY{p}{)} \PY{o+ow}{or} \PY{n}{pd}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unknown}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{3000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Low}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{elif} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Medium}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{elif} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{300}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{High}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Critical}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{classify\PYZus{}risk}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{✅ CDM setup complete.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rows:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Columns:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+✅ CDM setup complete.
+Rows: 185511
+Columns: ['conjunction\_id', 'creation\_date', 'miss\_distance', 'relative\_speed',
+'tca', 'warning\_time\_hours', 'risk\_level']
+   conjunction\_id              creation\_date  miss\_distance  relative\_speed  \textbackslash{}
+0         4708712 2023-12-30 23:45:37.201629     360.998008     4152.541202
+1         4796676 2023-12-31 17:07:38.953699     230.331161     6774.705183
+2         4714477 2023-12-30 21:25:33.977263     203.939751     8049.963408
+3         4411173 2023-12-28 07:09:39.816940     391.652906     9631.056058
+4         4654350 2023-12-30 12:52:44.482941     394.310174     1069.289496
+
+                      tca  warning\_time\_hours risk\_level
+0 2024-01-01 00:02:05.515           24.274531       High
+1 2024-01-01 00:02:42.456            6.917640   Critical
+2 2024-01-01 00:03:50.751           26.637993   Critical
+3 2024-01-01 00:06:15.343           88.943202       High
+4 2024-01-01 00:06:16.278           35.225499       High
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{daily\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{date}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{daily\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily Conjunction Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{monthly\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{to\PYZus{}period}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{M}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{monthly\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Monthly Conjunction Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Month}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Events}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{critical\PYZus{}events} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Critical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{critical\PYZus{}daily} \PY{o}{=} \PY{n}{critical\PYZus{}events}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{critical\PYZus{}events}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{date}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{critical\PYZus{}daily}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily Critical Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Critical Events}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Risk classification (re\PYZhy{}run if needed)}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{classify\PYZus{}risk}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{n}{d} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{v} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{3000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Low}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{elif} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Medium}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{elif} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{300}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{High}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Critical}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{classify\PYZus{}risk}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 4.4 Daily Critical Conjunctions}
+\PY{n}{critical\PYZus{}events} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Critical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{n}{critical\PYZus{}daily} \PY{o}{=} \PY{n}{critical\PYZus{}events}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{critical\PYZus{}events}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{date}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{critical\PYZus{}daily}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily Critical Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Critical Events}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 4.5 Weekly pattern of conjunctions}
+\PY{n}{weekly\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{to\PYZus{}period}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{weekly\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Weekly Conjunction Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Week}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+
+\PY{c+c1}{\PYZsh{} Extract hour of day}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hour}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{hour}
+
+\PY{c+c1}{\PYZsh{} Count events per hour per risk level}
+\PY{n}{pivot} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{pivot\PYZus{}table}\PY{p}{(}
+    \PY{n}{index}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hour}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{columns}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{values}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{conjunction\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{aggfunc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill\PYZus{}value}\PY{o}{=}\PY{l+m+mi}{0}
+\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{pivot}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{aspect}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{auto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Events}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{yticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{pivot}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{pivot}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{24}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hour of Day (UTC)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Risk Level}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Event Count by Hour and Risk Level}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define maneuver need conditions}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{maneuver\PYZus{}needed}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+m+mi}{100} \PY{o+ow}{and} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+m+mi}{24}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Required}\PY{l+s+s2}{\PYZdq{}}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No Maneuver}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}flag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{maneuver\PYZus{}needed}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Count results}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}flag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+maneuver\_flag
+No Maneuver          183165
+Maneuver Required      2346
+Name: count, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{maneuver\PYZus{}daily} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}flag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Required}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PYZbs{}
+                    \PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{date}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}daily}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily Maneuvers Required (Based on CDM Data)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Required Maneuvers}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{pd}\PY{o}{.}\PY{n}{crosstab}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{risk\PYZus{}level}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}flag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+maneuver\_flag  Maneuver Required  No Maneuver
+risk\_level
+Critical                    2346        76551
+High                           0       106614
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}flag}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Required}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}
+    \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Miss Distance Distribution for Maneuver\PYZhy{}Required Events}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Miss Distance (m)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{assign\PYZus{}maneuver}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{n}{d} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{v} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} No maneuver needed}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{500}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{None}\PY{l+s+s2}{\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} Moderate risk}
+    \PY{k}{if} \PY{l+m+mi}{200} \PY{o}{\PYZlt{}} \PY{n}{d} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{500}\PY{p}{:}
+        \PY{k}{if} \PY{n}{v} \PY{o}{\PYZlt{}} \PY{l+m+mi}{5000}\PY{p}{:}
+            \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Traditional Thruster}\PY{l+s+s2}{\PYZdq{}}
+        \PY{k}{else}\PY{p}{:}
+            \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Laser / Ion Beam}\PY{l+s+s2}{\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} High risk emergency}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{200}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hybrid Emergency Maneuver}\PY{l+s+s2}{\PYZdq{}}
+    
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{assign\PYZus{}maneuver}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   miss\_distance  relative\_speed         maneuver\_type
+0     360.998008     4152.541202  Traditional Thruster
+1     230.331161     6774.705183      Laser / Ion Beam
+2     203.939751     8049.963408      Laser / Ion Beam
+3     391.652906     9631.056058      Laser / Ion Beam
+4     394.310174     1069.289496  Traditional Thruster
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{maneuver\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+maneuver\_type
+Laser / Ion Beam             87577
+Traditional Thruster         60557
+Hybrid Emergency Maneuver    37377
+Name: count, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_37_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{assign\PYZus{}maneuver}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{n}{d} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{v} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} 1 — Low threat → Traditional Thruster correction}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZgt{}} \PY{l+m+mi}{200}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Traditional Thruster}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} 2 — Medium threat → Laser\PYZhy{}Based Nudging}
+    \PY{k}{if} \PY{l+m+mi}{50} \PY{o}{\PYZlt{}} \PY{n}{d} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{200}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Laser\PYZhy{}Based Nudging}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} 3 — High threat → Physical Capture / Removal (Net, Inflatable)}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{50}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Physical Capture / Removal}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{assign\PYZus{}maneuver}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{maneuver\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ASTRA\PYZhy{}X Recommended Maneuver Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{assign\PYZus{}maneuver}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{n}{d} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{v} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} PHYSICAL CAPTURE CubeSat (Critical)}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZlt{}} \PY{l+m+mi}{50} \PY{o+ow}{or} \PY{n}{v} \PY{o}{\PYZgt{}} \PY{l+m+mi}{10000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Physical Capture / Removal}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} LASER\PYZhy{}BASED NUDGING (Medium)}
+    \PY{k}{if} \PY{n}{d} \PY{o}{\PYZlt{}} \PY{l+m+mi}{200} \PY{o+ow}{or} \PY{n}{v} \PY{o}{\PYZgt{}} \PY{l+m+mi}{5000}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Laser\PYZhy{}Based Nudging}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} TRADITIONAL THRUSTER (Low)}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Traditional Thruster}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{assign\PYZus{}maneuver}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{miss\PYZus{}distance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relative\PYZus{}speed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   miss\_distance  relative\_speed         maneuver\_type
+0     360.998008     4152.541202  Traditional Thruster
+1     230.331161     6774.705183   Laser-Based Nudging
+2     203.939751     8049.963408   Laser-Based Nudging
+3     391.652906     9631.056058   Laser-Based Nudging
+4     394.310174     1069.289496  Traditional Thruster
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{maneuver\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+maneuver\_type
+Laser-Based Nudging           72314
+Traditional Thruster          60557
+Physical Capture / Removal    52640
+Name: count, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{maneuver\PYZus{}counts} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+maneuver\_type
+Laser-Based Nudging           72314
+Traditional Thruster          60557
+Physical Capture / Removal    52640
+Name: count, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{maneuver\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Extract date only from TCA}
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tca}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{date}
+
+\PY{c+c1}{\PYZsh{} Count maneuvers per day per maneuver type}
+\PY{n}{daily\PYZus{}maneuvers} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{fill\PYZus{}value}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{daily\PYZus{}maneuvers}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Daily Count of Maneuver Types Over Time}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Maneuvers}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+<Figure size 1500x600 with 0 Axes>
+    \end{Verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_45_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{power\PYZus{}cost}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Traditional Thruster}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{k}{return} \PY{l+m+mi}{10}
+    \PY{k}{elif} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Laser\PYZhy{}Based Nudging}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{k}{return} \PY{l+m+mi}{25}
+    \PY{k}{elif} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Physical Capture / Removal}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{k}{return} \PY{l+m+mi}{40}
+
+\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}wh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{power\PYZus{}cost}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{daily\PYZus{}power} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}wh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{daily\PYZus{}power}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{purple}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total Daily Power Required for Conjunction Mitigation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Energy (Wh)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_47_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{power\PYZus{}by\PYZus{}type} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}wh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{power\PYZus{}by\PYZus{}type}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total Energy Consumption by Maneuver Type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Energy (Wh)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maneuver Type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_48_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define urgent events:}
+\PY{c+c1}{\PYZsh{} \PYZhy{} Non\PYZhy{}trivial maneuver (laser or physical capture)}
+\PY{c+c1}{\PYZsh{} \PYZhy{} Warning time \PYZlt{} 24 hours (you can adjust threshold if you like)}
+
+\PY{n}{urgent} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}
+    \PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+m+mi}{24}\PY{p}{)} \PY{o}{\PYZam{}}
+    \PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Traditional Thruster}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{p}{]}
+
+\PY{n}{non\PYZus{}urgent} \PY{o}{=} \PY{n}{df\PYZus{}small}\PY{p}{[}
+    \PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{24}\PY{p}{)} \PY{o}{|}
+    \PY{p}{(}\PY{n}{df\PYZus{}small}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuver\PYZus{}type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Traditional Thruster}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{p}{]}
+
+\PY{n+nb}{len}\PY{p}{(}\PY{n}{urgent}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{non\PYZus{}urgent}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(33672, 151742)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Warning Time Distribution for Time\PYZhy{}Critical Events}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Warning Time (hours)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Conjunctions}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_50_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{urgent} \PY{o}{=} \PY{n}{urgent}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{decision\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{0.2}
+\PY{n}{urgent}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{decision\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    warning\_time\_hours  decision\_time\_hours
+1             6.917640             1.383528
+5            11.990930             2.398186
+13            2.686622             0.537324
+21           14.679969             2.935994
+25            6.990450             1.398090
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Design assumption (you can adjust numbers later if needed)}
+\PY{n}{N\PYZus{}cpu\PYZus{}per\PYZus{}hour} \PY{o}{=} \PY{l+m+mi}{100}      \PY{c+c1}{\PYZsh{} classical planner can evaluate 100 candidate maneuvers per hour}
+\PY{n}{speedup\PYZus{}factor} \PY{o}{=} \PY{l+m+mi}{10}       \PY{c+c1}{\PYZsh{} neuromorphic system can evaluate 10x more candidates per hour}
+
+\PY{n}{urgent} \PY{o}{=} \PY{n}{urgent}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{decision\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{N\PYZus{}cpu\PYZus{}per\PYZus{}hour}
+\PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{neuro\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{decision\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{N\PYZus{}cpu\PYZus{}per\PYZus{}hour} \PY{o}{*} \PY{n}{speedup\PYZus{}factor}
+
+\PY{n}{urgent}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{warning\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{decision\PYZus{}time\PYZus{}hours}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{neuro\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    warning\_time\_hours  decision\_time\_hours  cpu\_candidates  neuro\_candidates
+1             6.917640             1.383528      138.352791       1383.527906
+5            11.990930             2.398186      239.818602       2398.186020
+13            2.686622             0.537324       53.732437        537.324366
+21           14.679969             2.935994      293.599377       2935.993766
+25            6.990450             1.398090      139.808992       1398.089924
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{urgent}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{neuro\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       cpu\_candidates  neuro\_candidates
+count    33672.000000      33672.000000
+mean         7.733018         77.330177
+std        305.482193       3054.821931
+min       -856.545413      -8565.454134
+25\%       -232.688868      -2326.888681
+50\%         36.208424        362.084245
+75\%        272.238829       2722.388290
+max        479.998247       4799.982468
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cpu\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Conventional CPU}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{urgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{neuro\PYZus{}candidates}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Neuromorphic (10x)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Candidate Maneuvers Evaluated Within Decision Window}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Candidate Maneuvers}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Conjunction Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_54_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{digital\PYZus{}twin\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuvers\PYZus{}total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}total\PYZus{}wh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{df\PYZus{}small}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}wh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+            maneuvers\_total  power\_total\_wh
+date
+2024-01-01             1478           35525
+2024-01-02             1481           36920
+2024-01-03             1295           33935
+2024-01-04             1170           29190
+2024-01-05             1521           36780
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuvers\PYZus{}forecast}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuvers\PYZus{}total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{rolling}\PY{p}{(}\PY{n}{window}\PY{o}{=}\PY{l+m+mi}{7}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}forecast}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{power\PYZus{}total\PYZus{}wh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{rolling}\PY{p}{(}\PY{n}{window}\PY{o}{=}\PY{l+m+mi}{7}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuvers\PYZus{}total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Actual}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{digital\PYZus{}twin\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{maneuvers\PYZus{}forecast}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Forecast (7\PYZhy{}day MA)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Digital Twin – Maneuver Load Forecast}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of Maneuvers}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_57_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
